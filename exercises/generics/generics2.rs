@@ -1,19 +1,15 @@
-// generics2.rs
-//
 // This powerful wrapper provides the ability to store a positive integer value.
 // Rewrite it using generics so that it supports wrapping ANY type.
-//
-// Execute `rustlings hint generics2` or use the `hint` watch subcommand for a
-// hint.
 
-// I AM NOT DONE
+// Execute `rustlings hint generics2` or use the `hint` watch subcommand for a hint.
 
-struct Wrapper {
-    value: u32,
+
+struct Wrapper<T> {
+    value: T,
 }
 
-impl Wrapper {
-    pub fn new(value: u32) -> Self {
+impl<T> Wrapper<T> {
+    pub fn new(value: T) -> Wrapper<T> {
         Wrapper { value }
     }
 }
@@ -24,7 +20,7 @@ mod tests {
 
     #[test]
     fn store_u32_in_wrapper() {
-        assert_eq!(Wrapper::new(42).value, 42);
+        assert_eq!(Wrapper::<i32>::new(42).value, 42);
     }
 
     #[test]

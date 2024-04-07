@@ -8,7 +8,8 @@
 // - Enums
 //
 // Let's build a little machine in the form of a function. As input, we're going
-// to give a list of strings and commands. These commands determine what action
+// to give a list of strings and commands.
+// These commands determine what action
 // is going to be applied to the string. It can either be:
 // - Uppercase the string
 // - Trim the string
@@ -20,8 +21,6 @@
 //
 // No hints this time!
 
-// I AM NOT DONE
-
 pub enum Command {
     Uppercase,
     Trim,
@@ -31,12 +30,26 @@ pub enum Command {
 mod my_module {
     use super::Command;
 
-    // TODO: Complete the function signature!
-    pub fn transformer(input: ???) -> ??? {
-        // TODO: Complete the output declaration!
-        let mut output: ??? = vec![];
+    pub fn transformer(input: Vec<(String, Command)>) -> Vec<String> {
+        let mut output: Vec<String> = vec![];
+
+        // TODO: Refactor this to take advantage of my_module!
+
         for (string, command) in input.iter() {
             // TODO: Complete the function body. You can do it!
+            match command {
+                Command::Append(times) => {
+                    // append "bar" `times` times to string
+                    let appendix = string.to_owned() + &("bar".repeat(*times));
+                    output.push(appendix)
+                }
+                Command::Trim => {
+                    output.push(string.trim().to_owned());
+                }
+                Command::Uppercase => {
+                    output.push(string.to_uppercase());
+                }
+            }
         }
         output
     }
@@ -45,7 +58,7 @@ mod my_module {
 #[cfg(test)]
 mod tests {
     // TODO: What do we need to import to have `transformer` in scope?
-    use ???;
+    use super::my_module::transformer;
     use super::Command;
 
     #[test]
