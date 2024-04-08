@@ -163,7 +163,7 @@ path = "{}.rs""#,
                     .args(RUSTC_COLOR_ARGS)
                     .args(&["--", "-D", "warnings", "-D", "clippy::float_cmp"])
                     .output()
-            },
+            }
             Mode::BuildScript => {
                 let cargo_toml = format!(
                     r#"[package]
@@ -206,10 +206,12 @@ path = "{}.rs""#,
     fn run(&self) -> Result<ExerciseOutput, ExerciseOutput> {
         let arg = match self.mode {
             Mode::Test => "--show-output",
-            Mode::BuildScript => return Ok(ExerciseOutput {
-                stdout: "".to_string(),
-                stderr: "".to_string(),
-            }),
+            Mode::BuildScript => {
+                return Ok(ExerciseOutput {
+                    stdout: "".to_string(),
+                    stderr: "".to_string(),
+                })
+            }
             _ => "",
         };
         println!("pa={}", temp_file());
@@ -231,8 +233,7 @@ path = "{}.rs""#,
     }
 
     pub fn state(&self) -> State {
-        let mut source_file =
-            File::open(&self.path).expect("We were unable to open the exercise file!");
+        let mut source_file = File::open(&self.path).expect("We were to open the exercise file!");
 
         let source = {
             let mut s = String::new();
