@@ -12,7 +12,7 @@
 //
 // Execute `rustlings hint cow1` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
+#![feature(cow_is_borrowed)]
 
 use std::borrow::Cow;
 
@@ -48,7 +48,11 @@ mod tests {
         let slice = [0, 1, 2];
         let mut input = Cow::from(&slice[..]);
         match abs_all(&mut input) {
-            // TODO
+            Cow::Borrowed(_) => Ok(()),
+            Cow::Owned(_) => {
+                Err("Unexpected Owned (when input is not mutated).Expected borrowed value")
+            }
+            _ => Err("Unexpected value"),
         }
     }
 
@@ -59,8 +63,12 @@ mod tests {
         // still owned because it was never borrowed or mutated.
         let slice = vec![0, 1, 2];
         let mut input = Cow::from(slice);
-        match abs_all(&mut input) {
-            // TODO
+        let res = abs_all(&mut input);
+        // NOTICE: just try `cow::is_borrowed`
+        if res.is_owned() {
+            Ok(())
+        } else {
+            Err("Expected owned value")
         }
     }
 
@@ -72,7 +80,8 @@ mod tests {
         let slice = vec![-1, 0, 1];
         let mut input = Cow::from(slice);
         match abs_all(&mut input) {
-            // TODO
+            Cow::Owned(_) => Ok(()),
+            _ => Err("Expected owned value"),
         }
     }
 }

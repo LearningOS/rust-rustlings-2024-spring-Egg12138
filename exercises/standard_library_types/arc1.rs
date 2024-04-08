@@ -12,12 +12,10 @@
 // Because we are using threads, our values need to be thread-safe.  Therefore,
 // we are using Arc.  We need to make a change in each of the two TODOs.
 
-
 // Make this code compile by filling in a value for `shared_numbers` where the
 // first TODO comment is, and create an initial binding for `child_numbers`
 // where the second TODO comment is. Try not to create any copies of the `numbers` Vec!
 // Execute `rustlings hint arc1` or use the `hint` watch subcommand for a hint.
-
 
 #![forbid(unused_imports)] // Do not change this, (or the next) line.
 use std::sync::Arc;
@@ -25,7 +23,7 @@ use std::thread;
 
 fn main() {
     let numbers: Vec<_> = (0..100u32).collect();
-    let shared_numbers = Arc::new(numbers);// TODO
+    let shared_numbers = Arc::new(numbers); // TODO
     let mut joinhandles = Vec::new();
 
     for offset in 0..8 {
