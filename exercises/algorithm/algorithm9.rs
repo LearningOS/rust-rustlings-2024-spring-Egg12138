@@ -1,8 +1,7 @@
 /*
-	heap
-	This question requires you to implement a binary heap function
+    heap
+    This question requires you to implement a binary heap function
 */
-// I AM NOT DONE
 
 use std::cmp::Ord;
 use std::default::Default;
@@ -38,9 +37,27 @@ where
 
     pub fn add(&mut self, value: T) {
         //TODO
+        self.items.push(value);
+        self.count += 1;
+
+        if self.is_empty() {
+            return;
+        }
+
+        let mut adjust_id = self.count;
+
+        let mut parent_id = self.parent_of(adjust_id);
+        while parent_id > 0 {
+            if (self.comparator)(&self.items[adjust_id], &self.items[parent_id]) {
+                self.items.swap(adjust_id, parent_id);
+            }
+
+            adjust_id = parent_id;
+            parent_id = self.parent_of(adjust_id);
+        }
     }
 
-    fn parent_idx(&self, idx: usize) -> usize {
+    fn parent_of(&self, idx: usize) -> usize {
         idx / 2
     }
 
@@ -58,7 +75,18 @@ where
 
     fn smallest_child_idx(&self, idx: usize) -> usize {
         //TODO
-		0
+
+        if self.right_child_idx(idx) > self.count {
+            self.left_child_idx(idx)
+        } else {
+            let l = self.left_child_idx(idx);
+            let r = self.right_child_idx(idx);
+            if (self.comparator)(&self.items[l], &self.items[r]) {
+                l
+            } else {
+                r
+            }
+        }
     }
 }
 
@@ -85,7 +113,27 @@ where
 
     fn next(&mut self) -> Option<T> {
         //TODO
-		None
+        if self.is_empty() {
+            return None;
+        }
+
+        if self.count == 1 {
+            return Some(self.items.remove(0));
+        }
+
+        let next_elem = Some(self.items.swap_remove(1));
+        self.count -= 1;
+        let mut adjust_idx = 1;
+        while self.children_present(adjust_idx) {
+            let child_id = self.smallest_child_idx(adjust_idx);
+            if (self.comparator)(&self.items[child_id], &self.items[adjust_idx]) {
+                self.items.swap(adjust_idx, child_id);
+            }
+
+            adjust_idx = child_id;
+        }
+
+        next_elem
     }
 }
 
