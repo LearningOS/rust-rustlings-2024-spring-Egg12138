@@ -72,6 +72,7 @@ impl<T: PartialEq + PartialOrd> LinkedList<T> {
 
     pub fn merge(list_a: LinkedList<T>, list_b: LinkedList<T>) -> Self {
         //TODO
+
         let mut target = LinkedList::new();
         let mut next_node = &mut target.start;
         let mut l1 = list_a.start;
