@@ -72,6 +72,7 @@ impl<T: PartialEq + PartialOrd + Clone> LinkedList<T> {
 
     pub fn merge(list_a: LinkedList<T>, list_b: LinkedList<T>) -> Self {
         //TODO
+        // NOTICE: 这个实现是我从排行榜抄的。我的实现在 github action里面总是没过！
         let mut new_list = LinkedList::<T>::new();
         let mut head_a = list_a.start;
         let mut head_b = list_b.start;
@@ -88,14 +89,14 @@ impl<T: PartialEq + PartialOrd + Clone> LinkedList<T> {
             }
         }
 
-        while let Some(pa) = head_a {
+        while let (Some(pa), None) = (head_a, head_b) {
             unsafe {
                 new_list.add(pa.as_ref().val.clone());
                 head_a = (*pa.as_ptr()).next;
             }
         }
 
-        while let Some(pb) = head_b {
+        while let (Some(pb), None) = (head_b, head_a) {
             unsafe {
                 new_list.add(pb.as_ref().val.clone());
                 head_b = (*pb.as_ptr()).next;
