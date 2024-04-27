@@ -11,7 +11,7 @@ use std::vec::*;
 
 type Link<T> = Option<NonNull<Node<T>>>;
 
-#[derive(Debug, PartialEq, PartialOrd)]
+#[derive(Debug, PartialEq, PartialOrd, Clone)]
 struct Node<T> {
     val: T,
     next: Link<T>,

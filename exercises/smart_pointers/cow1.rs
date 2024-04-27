@@ -49,7 +49,7 @@ mod tests {
         let mut input = Cow::from(&slice[..]);
         match abs_all(&mut input) {
             Cow::Borrowed(_) => Ok(()),
-            _ => Err("Unexpected value"),
+            _ => Err("Expected borrowed value"),
         }
     }
 
@@ -61,10 +61,9 @@ mod tests {
         let slice = vec![0, 1, 2];
         let mut input = Cow::from(slice);
         let res = abs_all(&mut input);
-        if res.is_owned() {
-            Ok(())
-        } else {
-            Err("Expected owned value")
+        match res {
+            Cow::Owned(_) => Ok(()),
+            _ => Err("Expected borrowed value"),
         }
     }
 
