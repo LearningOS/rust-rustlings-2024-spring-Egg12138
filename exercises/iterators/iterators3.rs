@@ -28,14 +28,14 @@ pub struct NotDivisibleError {
 // Otherwise, return a suitable error.
 pub fn divide(a: i32, b: i32) -> Result<i32, DivisionError> {
     if b == 0 {
-        return Err(DivisionError::DivideByZero);
+         Err(DivisionError::DivideByZero)
     } else if a % b != 0 {
-        return Err(DivisionError::NotDivisible(NotDivisibleError {
+        Err(DivisionError::NotDivisible(NotDivisibleError {
             dividend: a,
             divisor: b,
-        }));
+        }))
     } else {
-        return Ok(a / b);
+         Ok(a / b)
     }
 }
 
@@ -47,7 +47,7 @@ fn result_with_list() -> Result<Vec<i32>, DivisionError> {
     numbers
         .into_iter()
         .map(|n| divide(n, 27))
-        .try_collect::<Vec<i32>>()
+        .collect::<Result<_>>()
     // let mut division_results = numbers.into_iter().map(|n| divide(n, 27));
 }
 

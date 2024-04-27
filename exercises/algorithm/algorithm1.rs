@@ -29,13 +29,13 @@ struct LinkedList<T> {
     end: Link<T>,
 }
 
-impl<T: PartialEq + PartialOrd> Default for LinkedList<T> {
+impl<T: PartialEq + PartialOrd + Clone> Default for LinkedList<T> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<T: PartialEq + PartialOrd> LinkedList<T> {
+impl<T: PartialEq + PartialOrd + Clone> LinkedList<T> {
     pub fn new() -> Self {
         Self {
             length: 0,
@@ -72,43 +72,37 @@ impl<T: PartialEq + PartialOrd> LinkedList<T> {
 
     pub fn merge(list_a: LinkedList<T>, list_b: LinkedList<T>) -> Self {
         //TODO
+        let mut new_list = LinkedList::<T>::new();
+        let mut head_a = list_a.start;
+        let mut head_b = list_b.start;
 
-        let mut target = LinkedList::new();
-        let mut next_node = &mut target.start;
-        let mut l1 = list_a.start;
-        let mut l2 = list_b.start;
-        let mut l1node = l1;
-        let mut l2node = l2;
-        loop {
-            let mut l1 = match l1node {
-                Some(l1) => l1,
-                None => {
-                    *next_node = l2node;
-                    break;
-                }
-            };
-            let mut l2 = match l2node {
-                Some(l2) => l2,
-                None => {
-                    *next_node = l1node;
-                    break;
-                }
-            };
+        while let (Some(pa), Some(pb)) = (head_a, head_b) {
             unsafe {
-                if l1.read_volatile() < l2.read_volatile() {
-                    l1node = l1.as_mut().next.take();
-                    l2node = Some(l2);
-                    *next_node = Some(l1);
+                if pa.as_ref().val <= pb.as_ref().val {
+                    new_list.add(pa.as_ref().val.clone());
+                    head_a = (*pa.as_ptr()).next;
                 } else {
-                    l2node = l2.as_mut().next.take();
-                    l1node = Some(l1);
-                    *next_node = Some(l2);
+                    new_list.add(pb.as_ref().val.clone());
+                    head_b = (*pb.as_ptr()).next;
                 }
-
-                next_node = &mut next_node.unwrap().as_mut().next;
             }
         }
-        target
+
+        while let Some(pa) = head_a {
+            unsafe {
+                new_list.add(pa.as_ref().val.clone());
+                head_a = (*pa.as_ptr()).next;
+            }
+        }
+
+        while let Some(pb) = head_b {
+            unsafe {
+                new_list.add(pb.as_ref().val.clone());
+                head_b = (*pb.as_ptr()).next;
+            }
+        }
+
+        new_list
     }
 }
 
